@@ -11,3 +11,8 @@ deployment/push_and_deploy_pf.py
 endpoint.json
 principal.txt
 .azure
+
+# Java / IntelliJ
+**/target/
+.idea/
+*.iml
