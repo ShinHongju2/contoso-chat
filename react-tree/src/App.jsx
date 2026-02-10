@@ -96,7 +96,7 @@ function App() {
 
   return (
     <div className="app">
-      <Tree data={sampleData} onNodeSelect={handleNodeSelect} />
+      <Tree initialData={sampleData} onNodeSelect={handleNodeSelect} />
     </div>
   );
 }

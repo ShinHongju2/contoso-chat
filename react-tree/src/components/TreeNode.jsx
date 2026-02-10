@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import './TreeNode.css';
 
-const TreeNode = ({ node, level = 0, onSelect }) => {
+const TreeNode = ({ 
+  node, 
+  level = 0, 
+  onSelect, 
+  onContextMenu,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  draggedNode
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const hasChildren = node.children && node.children.length > 0;
   const isFolder = node.type === 'folder';
+  const isDraggedOver = draggedNode && draggedNode !== node;
 
   const handleToggle = (e) => {
     e.stopPropagation();
@@ -17,6 +27,38 @@ const TreeNode = ({ node, level = 0, onSelect }) => {
     e.stopPropagation();
     if (onSelect) {
       onSelect(node);
+    }
+  };
+
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onContextMenu) {
+      onContextMenu(e, node);
+    }
+  };
+
+  const handleDragStart = (e) => {
+    e.stopPropagation();
+    if (onDragStart) {
+      onDragStart(node);
+    }
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onDragOver) {
+      onDragOver(node);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onDrop) {
+      onDrop(node);
     }
   };
 
@@ -51,9 +93,14 @@ const TreeNode = ({ node, level = 0, onSelect }) => {
   return (
     <div className="tree-node">
       <div
-        className={`tree-node-header ${isFolder ? 'folder' : 'file'}`}
+        className={`tree-node-header ${isFolder ? 'folder' : 'file'} ${isDraggedOver ? 'drag-over' : ''}`}
         style={{ paddingLeft: `${level * 20}px` }}
         onClick={handleClick}
+        onContextMenu={handleContextMenu}
+        draggable={true}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
       >
         {isFolder && (
           <span className="toggle-icon" onClick={handleToggle}>
@@ -76,6 +123,11 @@ const TreeNode = ({ node, level = 0, onSelect }) => {
               node={child}
               level={level + 1}
               onSelect={onSelect}
+              onContextMenu={onContextMenu}
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDrop={onDrop}
+              draggedNode={draggedNode}
             />
           ))}
         </div>

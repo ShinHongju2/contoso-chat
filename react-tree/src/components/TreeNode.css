@@ -19,6 +19,11 @@
   background-color: #e8e8e8;
 }
 
+.tree-node-header.drag-over {
+  background-color: #cfe8fc;
+  border: 2px dashed #0066cc;
+}
+
 .tree-node-header.folder {
   font-weight: 500;
 }
